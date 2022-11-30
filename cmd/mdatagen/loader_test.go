@@ -36,11 +36,69 @@ func Test_loadMetadata(t *testing.T) {
 			want: metadata{
 				Name:           "metricreceiver",
 				SemConvVersion: "1.9.0",
+				ResourceAttributes: map[attributeName]attribute{
+					"enumResourceAttribute": {
+						Description: "ResourceAttribute with a known set of values.",
+						Value:       "",
+						Enum:        []string{"red", "green", "blue"},
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeStr,
+						},
+					},
+					"explicitlyEnabledResourceAttribute": {
+						Description: "explicitly enabled ResourceAttribute",
+						Enabled:     (func() *bool { t := true; return &t })(),
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeStr,
+						},
+					},
+					"explicitlyDisabledResourceAttribute": {
+						Description: "explicitly disabled ResourceAttribute",
+						Enabled:     (func() *bool { t := false; return &t })(),
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeStr,
+						},
+					},
+					"freeFormResourceAttribute": {
+						Description: "ResourceAttribute that can take on any value.",
+						Value:       "",
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeStr,
+						},
+					},
+					"freeFormResourceAttributeWithValue": {
+						Description: "ResourceAttribute that has alternate value set.",
+						Value:       "state",
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeStr,
+						},
+					},
+					"resourceBooleanValueType": {
+						Description: "ResourceAttribute with a boolean value.",
+						Value:       "0",
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeBool,
+						},
+					}},
 				Attributes: map[attributeName]attribute{
 					"enumAttribute": {
 						Description: "Attribute with a known set of values.",
 						Value:       "",
 						Enum:        []string{"red", "green", "blue"},
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeStr,
+						},
+					},
+					"explicitlyEnabledAttribute": {
+						Description: "explicitly enabled Attribute",
+						Enabled:     (func() *bool { t := true; return &t })(),
+						Type: ValueType{
+							ValueType: pcommon.ValueTypeStr,
+						},
+					},
+					"explicitlyDisabledAttribute": {
+						Description: "explicitly disabled Attribute",
+						Enabled:     (func() *bool { t := false; return &t })(),
 						Type: ValueType{
 							ValueType: pcommon.ValueTypeStr,
 						},

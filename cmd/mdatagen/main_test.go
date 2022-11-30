@@ -25,6 +25,11 @@ import (
 const (
 	validMetadata = `
 name: metricreceiver
+resource_attributes:
+  hwid:
+    description: motherboard hw id
+    enabled: true
+    type: string
 attributes:
   cpu_type:
     value: type

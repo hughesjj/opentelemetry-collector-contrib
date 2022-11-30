@@ -59,6 +59,51 @@ func DefaultMetricsSettings() MetricsSettings {
 	}
 }
 
+// BEGIN RESOURCE ATTRS HUGHESJJ
+// ResourceAttributeSettings provides common settings for a particular metric.
+type ResourceAttributeSettings struct {
+	Enabled bool `mapstructure:"enabled"`
+
+	enabledProvidedByUser bool
+}
+
+// IsEnabledProvidedByUser returns true if `enabled` option is explicitly set in user settings to any value.
+func (ras *ResourceAttributeSettings) IsEnabledProvidedByUser() bool {
+	return ras.enabledProvidedByUser
+}
+
+func (ras *ResourceAttributeSettings) Unmarshal(parser *confmap.Conf) error {
+	if parser == nil {
+		return nil
+	}
+	err := parser.Unmarshal(ras, confmap.WithErrorUnused())
+	if err != nil {
+		return err
+	}
+	ras.enabledProvidedByUser = parser.IsSet("enabled")
+	return nil
+}
+
+// ResourceAttributesSettings provides settings for {{ .Name }} metrics.
+type ResourceAttributesSettings struct {
+	{{- range $name, $attr := .ResourceAttributes }}
+	{{ $name.Render }} ResourceAttributeSettings `mapstructure:"{{ $name }}"`
+	{{- end }}
+}
+
+func DefaultResourceAttributesSettings() ResourceAttributesSettings {
+	return ResourceAttributesSettings{
+		{{- range $name, $attr := .ResourceAttributes }}
+		{{ $name.Render }}: ResourceAttributeSettings{
+			Enabled: {{ $attr.Enabled }},
+		},
+		{{- end }}
+	}
+}
+// END RESOURCE ATTRS HUGHESJJ
+
+
+
 {{ range $name, $info := .Attributes }}
 {{- if $info.Enum -}}
 // Attribute{{ $name.Render }} specifies the a value {{ $name }} attribute.
@@ -118,18 +163,20 @@ func (m *metric{{ $name.Render }}) init() {
 
 func (m *metric{{ $name.Render }}) recordDataPoint(start pcommon.Timestamp, ts pcommon.Timestamp, val {{ $metric.Data.MetricValueType.BasicType }}
 {{- range $metric.Attributes -}}, {{ .RenderUnexported }}AttributeValue {{ (attributeInfo .).Type.Primitive }}{{ end }}) {
-	if !m.settings.Enabled {
+	if !m.settings.Enabled{
 		return
 	}
 	dp := m.data.{{ $metric.Data.Type }}().DataPoints().AppendEmpty()
 	dp.SetStartTimestamp(start)
 	dp.SetTimestamp(ts)
 	dp.Set{{ $metric.Data.MetricValueType }}Value(val)
-	{{- range $metric.Attributes }}
-	{{- if eq (attributeInfo .).Type.Primitive "[]byte" }}
+	{{ range $metric.Attributes }}
+	{{ if or (eq (attributeInfo .).Enabled nil) (eq (attributeInfo .).Enabled true) }}
+	{{ if eq (attributeInfo .).Type.Primitive "[]byte" }}
 	dp.Attributes().PutEmptyBytes("{{ attributeKey .}}").FromRaw({{ .RenderUnexported }}AttributeValue)
 	{{- else }}
 	dp.Attributes().Put{{ (attributeInfo .).Type }}("{{ attributeKey .}}", {{ .RenderUnexported }}AttributeValue)
+	{{- end }}
 	{{- end }}
 	{{- end }}
 }

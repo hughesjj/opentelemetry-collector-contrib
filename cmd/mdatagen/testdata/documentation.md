@@ -19,6 +19,12 @@ metrics:
     enabled: <true|false>
 ```
 
+## Resource attributes
+
+| Name | Description | Type | Enabled |
+| ---- | ----------- | ---- | ------- |
+| hwid | motherboard hw id | Str | true |
+
 ## Metric attributes
 
 | Name | Description | Values |

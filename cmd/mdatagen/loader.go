@@ -156,6 +156,8 @@ func (m metric) IsEnabled() bool {
 type attribute struct {
 	// Description describes the purpose of the attribute.
 	Description string `validate:"notblank"`
+	// Enabled defines whether the attribute is enabled by default.
+	Enabled *bool `yaml:"enabled"`
 	// Value can optionally specify the value this attribute will have.
 	// For example, the attribute may have the identifier `MemState` to its
 	// value may be `state` when used.
@@ -164,6 +166,10 @@ type attribute struct {
 	Enum []string
 	// Type is an attribute type.
 	Type ValueType `mapstructure:"type" validate:"dive"`
+}
+
+func (attr attribute) IsEnabled() bool {
+	return *attr.Enabled
 }
 
 type metadata struct {

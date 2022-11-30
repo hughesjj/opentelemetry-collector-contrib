@@ -2,7 +2,46 @@ name: metricreceiver
 
 sem_conv_version: 1.9.0
 
+resource_attributes:
+  explicitlyEnabledResourceAttribute:
+    description: explicitly enabled ResourceAttribute
+    type: string
+    enabled: true
+
+  explicitlyDisabledResourceAttribute:
+    description: explicitly disabled ResourceAttribute
+    type: string
+    enabled: false
+
+  freeFormResourceAttribute:
+    description: ResourceAttribute that can take on any value.
+    type: string
+
+  freeFormResourceAttributeWithValue:
+    value: state
+    description: ResourceAttribute that has alternate value set.
+    type: string
+
+  enumResourceAttribute:
+    description: ResourceAttribute with a known set of values.
+    type: string
+    enum: [red, green, blue]
+
+  resourceBooleanValueType:
+    description: ResourceAttribute with a boolean value.
+    type: bool
+    value: false
 attributes:
+  explicitlyEnabledAttribute:
+    description: explicitly enabled Attribute
+    type: string
+    enabled: true
+
+  explicitlyDisabledAttribute:
+    description: explicitly disabled Attribute
+    type: string
+    enabled: false
+
   freeFormAttribute:
     description: Attribute that can take on any value.
     type: string

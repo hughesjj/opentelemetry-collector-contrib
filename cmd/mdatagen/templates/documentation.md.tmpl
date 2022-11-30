@@ -27,10 +27,10 @@ metrics:
 
 ## Resource attributes
 
-| Name | Description | Type |
-| ---- | ----------- | ---- |
+| Name | Description | Type | Enabled |
+| ---- | ----------- | ---- | ------- |
 {{- range $attributeName, $attributeInfo := .ResourceAttributes }}
-| {{ $attributeName }} | {{ $attributeInfo.Description }} | {{ $attributeInfo.Type }} |
+| {{ $attributeName }} | {{ $attributeInfo.Description }} | {{ $attributeInfo.Type }} | {{ $attributeInfo.Enabled }} |
 {{- end }}
 {{- end }}
 
