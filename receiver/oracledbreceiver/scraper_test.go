@@ -51,7 +51,7 @@ var queryResponses = map[string][]metricRow{
 }
 
 func TestScraper_Scrape(t *testing.T) {
-	metricsBuilder := metadata.NewMetricsBuilder(metadata.DefaultMetricsSettings(), receivertest.NewNopCreateSettings())
+	metricsBuilder := metadata.NewMetricsBuilder(metadata.DefaultMetricsBuilderConfig(), receivertest.NewNopCreateSettings())
 
 	scrpr := scraper{
 		logger:         zap.NewNop(),
@@ -66,8 +66,8 @@ func TestScraper_Scrape(t *testing.T) {
 				},
 			}
 		},
-		id:              component.ID{},
-		metricsSettings: metadata.DefaultMetricsSettings(),
+		id:                   component.ID{},
+		metricsBuilderConfig: metadata.DefaultMetricsBuilderConfig(),
 	}
 	err := scrpr.start(context.Background(), componenttest.NewNopHost())
 	defer func() {
@@ -83,7 +83,7 @@ func TestScraper_Scrape(t *testing.T) {
 }
 
 func TestPartial_InvalidScrape(t *testing.T) {
-	metricsBuilder := metadata.NewMetricsBuilder(metadata.DefaultMetricsSettings(), receivertest.NewNopCreateSettings())
+	metricsBuilder := metadata.NewMetricsBuilder(metadata.DefaultMetricsBuilderConfig(), receivertest.NewNopCreateSettings())
 
 	scrpr := scraper{
 		logger:         zap.NewNop(),
@@ -103,8 +103,8 @@ func TestPartial_InvalidScrape(t *testing.T) {
 				queryResponses[s],
 			}}
 		},
-		id:              component.ID{},
-		metricsSettings: metadata.DefaultMetricsSettings(),
+		id:                   component.ID{},
+		metricsBuilderConfig: metadata.DefaultMetricsBuilderConfig(),
 	}
 	err := scrpr.start(context.Background(), componenttest.NewNopHost())
 	defer func() {

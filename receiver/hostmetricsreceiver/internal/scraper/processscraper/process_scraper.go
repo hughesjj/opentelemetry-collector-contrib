@@ -91,7 +91,7 @@ func newProcessScraper(settings receiver.CreateSettings, cfg *Config) (*scraper,
 }
 
 func (s *scraper) start(context.Context, component.Host) error {
-	s.mb = metadata.NewMetricsBuilder(s.config.Metrics, s.settings)
+	s.mb = metadata.NewMetricsBuilder(s.config.MetricsBuilderConfig, s.settings)
 	return nil
 }
 
@@ -227,7 +227,7 @@ func (s *scraper) getProcessMetadata() ([]*processMetadata, error) {
 }
 
 func (s *scraper) scrapeAndAppendCPUTimeMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.Metrics.ProcessCPUTime.Enabled {
+	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessCPUTime.Enabled {
 		return nil
 	}
 
@@ -243,7 +243,7 @@ func (s *scraper) scrapeAndAppendCPUTimeMetric(now pcommon.Timestamp, handle pro
 }
 
 func (s *scraper) scrapeAndAppendMemoryUsageMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !(s.config.Metrics.ProcessMemoryUsage.Enabled || s.config.Metrics.ProcessMemoryVirtual.Enabled) {
+	if !(s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryUsage.Enabled || s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryVirtualUsage.Enabled) {
 		return nil
 	}
 
@@ -258,7 +258,7 @@ func (s *scraper) scrapeAndAppendMemoryUsageMetrics(now pcommon.Timestamp, handl
 }
 
 func (s *scraper) scrapeAndAppendMemoryUtilizationMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.Metrics.ProcessMemoryUtilization.Enabled {
+	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryUtilization.Enabled {
 		return nil
 	}
 
@@ -273,7 +273,7 @@ func (s *scraper) scrapeAndAppendMemoryUtilizationMetric(now pcommon.Timestamp, 
 }
 
 func (s *scraper) scrapeAndAppendDiskMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !(s.config.Metrics.ProcessDiskIo.Enabled || s.config.Metrics.ProcessDiskOperations.Enabled) {
+	if !(s.config.MetricsBuilderConfig.MetricsSettings.ProcessDiskIo.Enabled || s.config.MetricsBuilderConfig.MetricsSettings.ProcessDiskOperations.Enabled) {
 		return nil
 	}
 
@@ -291,7 +291,7 @@ func (s *scraper) scrapeAndAppendDiskMetrics(now pcommon.Timestamp, handle proce
 }
 
 func (s *scraper) scrapeAndAppendPagingMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.Metrics.ProcessPagingFaults.Enabled {
+	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessPagingFaults.Enabled {
 		return nil
 	}
 
@@ -307,7 +307,7 @@ func (s *scraper) scrapeAndAppendPagingMetric(now pcommon.Timestamp, handle proc
 }
 
 func (s *scraper) scrapeAndAppendThreadsMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.Metrics.ProcessThreads.Enabled {
+	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessThreads.Enabled {
 		return nil
 	}
 	threads, err := handle.NumThreads()
@@ -320,7 +320,7 @@ func (s *scraper) scrapeAndAppendThreadsMetrics(now pcommon.Timestamp, handle pr
 }
 
 func (s *scraper) scrapeAndAppendContextSwitchMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.Metrics.ProcessContextSwitches.Enabled {
+	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessContextSwitches.Enabled {
 		return nil
 	}
 
@@ -337,7 +337,7 @@ func (s *scraper) scrapeAndAppendContextSwitchMetrics(now pcommon.Timestamp, han
 }
 
 func (s *scraper) scrapeAndAppendOpenFileDescriptorsMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.Metrics.ProcessOpenFileDescriptors.Enabled {
+	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessOpenFileDescriptors.Enabled {
 		return nil
 	}
 
@@ -353,7 +353,7 @@ func (s *scraper) scrapeAndAppendOpenFileDescriptorsMetric(now pcommon.Timestamp
 }
 
 func (s *scraper) scrapeAndAppendSignalsPendingMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.Metrics.ProcessSignalsPending.Enabled {
+	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessSignalsPending.Enabled {
 		return nil
 	}
 
