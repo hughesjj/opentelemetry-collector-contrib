@@ -94,7 +94,7 @@ func newElasticSearchScraper(
 	e := &elasticsearchScraper{
 		settings:                              settings.TelemetrySettings,
 		cfg:                                   cfg,
-		mb:                                    metadata.NewMetricsBuilder(cfg.Metrics, settings),
+		mb:                                    metadata.NewMetricsBuilder(cfg.MetricsBuilderConfig, settings),
 		emitClusterHealthDetailedShardMetrics: featuregate.GlobalRegistry().IsEnabled(emitClusterHealthDetailedShardMetricsID),
 		emitAllIndexOperationMetrics:          featuregate.GlobalRegistry().IsEnabled(emitAllIndexOperationMetricsID),
 		emitNodeVersionAttr:                   featuregate.GlobalRegistry().IsEnabled(emitNodeVersionAttrID),

@@ -44,12 +44,12 @@ type receiver struct {
 
 func newReceiver(set rcvr.CreateSettings, config *Config) *receiver {
 	if config.ProvidePerCoreCPUMetrics {
-		config.MetricsConfig.ContainerCPUUsagePercpu.Enabled = config.ProvidePerCoreCPUMetrics
+		config.MetricsBuilderConfig.MetricsSettings.ContainerCPUUsagePercpu.Enabled = config.ProvidePerCoreCPUMetrics
 	}
 	return &receiver{
 		config:   config,
 		settings: set,
-		mb:       metadata.NewMetricsBuilder(config.MetricsConfig, set),
+		mb:       metadata.NewMetricsBuilder(config.MetricsBuilderConfig, set),
 	}
 }
 
