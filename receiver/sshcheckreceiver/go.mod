@@ -16,7 +16,26 @@ require (
 	golang.org/x/crypto v0.0.0-20220826181053-bd7e27e6170d
 )
 
-require github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.70.0 // indirect
+require (
+	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
+	github.com/Microsoft/go-winio v0.5.2 // indirect
+	github.com/Microsoft/hcsshim v0.9.4 // indirect
+	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
+	github.com/containerd/cgroups v1.0.4 // indirect
+	github.com/containerd/containerd v1.6.8 // indirect
+	github.com/docker/distribution v2.8.1+incompatible // indirect
+	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/google/uuid v1.3.0 // indirect
+	github.com/magiconair/properties v1.8.6 // indirect
+	github.com/moby/sys/mount v0.3.3 // indirect
+	github.com/moby/sys/mountinfo v0.6.2 // indirect
+	github.com/moby/term v0.0.0-20210619224110-3f7ff695adc6 // indirect
+	github.com/morikuni/aec v1.0.0 // indirect
+	github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil v0.70.0 // indirect
+	github.com/opencontainers/runc v1.1.3 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
+)
 
 require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
