@@ -227,7 +227,7 @@ func (s *scraper) getProcessMetadata() ([]*processMetadata, error) {
 }
 
 func (s *scraper) scrapeAndAppendCPUTimeMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessCPUTime.Enabled {
+	if !s.config.MetricsBuilderConfig.Metrics.ProcessCPUTime.Enabled {
 		return nil
 	}
 
@@ -243,7 +243,7 @@ func (s *scraper) scrapeAndAppendCPUTimeMetric(now pcommon.Timestamp, handle pro
 }
 
 func (s *scraper) scrapeAndAppendMemoryUsageMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !(s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryUsage.Enabled || s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryVirtual.Enabled || s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryPhysicalUsage.Enabled || s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryVirtualUsage.Enabled) {
+	if !(s.config.MetricsBuilderConfig.Metrics.ProcessMemoryUsage.Enabled || s.config.MetricsBuilderConfig.Metrics.ProcessMemoryVirtual.Enabled || s.config.MetricsBuilderConfig.Metrics.ProcessMemoryPhysicalUsage.Enabled || s.config.MetricsBuilderConfig.Metrics.ProcessMemoryVirtualUsage.Enabled) {
 		return nil
 	}
 
@@ -260,7 +260,7 @@ func (s *scraper) scrapeAndAppendMemoryUsageMetrics(now pcommon.Timestamp, handl
 }
 
 func (s *scraper) scrapeAndAppendMemoryUtilizationMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessMemoryUtilization.Enabled {
+	if !s.config.MetricsBuilderConfig.Metrics.ProcessMemoryUtilization.Enabled {
 		return nil
 	}
 
@@ -275,7 +275,7 @@ func (s *scraper) scrapeAndAppendMemoryUtilizationMetric(now pcommon.Timestamp, 
 }
 
 func (s *scraper) scrapeAndAppendDiskMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !(s.config.MetricsBuilderConfig.MetricsSettings.ProcessDiskIo.Enabled || s.config.MetricsBuilderConfig.MetricsSettings.ProcessDiskOperations.Enabled) {
+	if !(s.config.MetricsBuilderConfig.Metrics.ProcessDiskIo.Enabled || s.config.MetricsBuilderConfig.Metrics.ProcessDiskOperations.Enabled) {
 		return nil
 	}
 
@@ -293,7 +293,7 @@ func (s *scraper) scrapeAndAppendDiskMetrics(now pcommon.Timestamp, handle proce
 }
 
 func (s *scraper) scrapeAndAppendPagingMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessPagingFaults.Enabled {
+	if !s.config.MetricsBuilderConfig.Metrics.ProcessPagingFaults.Enabled {
 		return nil
 	}
 
@@ -309,7 +309,7 @@ func (s *scraper) scrapeAndAppendPagingMetric(now pcommon.Timestamp, handle proc
 }
 
 func (s *scraper) scrapeAndAppendThreadsMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessThreads.Enabled {
+	if !s.config.MetricsBuilderConfig.Metrics.ProcessThreads.Enabled {
 		return nil
 	}
 	threads, err := handle.NumThreads()
@@ -322,7 +322,7 @@ func (s *scraper) scrapeAndAppendThreadsMetrics(now pcommon.Timestamp, handle pr
 }
 
 func (s *scraper) scrapeAndAppendContextSwitchMetrics(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessContextSwitches.Enabled {
+	if !s.config.MetricsBuilderConfig.Metrics.ProcessContextSwitches.Enabled {
 		return nil
 	}
 
@@ -339,7 +339,7 @@ func (s *scraper) scrapeAndAppendContextSwitchMetrics(now pcommon.Timestamp, han
 }
 
 func (s *scraper) scrapeAndAppendOpenFileDescriptorsMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessOpenFileDescriptors.Enabled {
+	if !s.config.MetricsBuilderConfig.Metrics.ProcessOpenFileDescriptors.Enabled {
 		return nil
 	}
 
@@ -355,7 +355,7 @@ func (s *scraper) scrapeAndAppendOpenFileDescriptorsMetric(now pcommon.Timestamp
 }
 
 func (s *scraper) scrapeAndAppendSignalsPendingMetric(now pcommon.Timestamp, handle processHandle) error {
-	if !s.config.MetricsBuilderConfig.MetricsSettings.ProcessSignalsPending.Enabled {
+	if !s.config.MetricsBuilderConfig.Metrics.ProcessSignalsPending.Enabled {
 		return nil
 	}
 

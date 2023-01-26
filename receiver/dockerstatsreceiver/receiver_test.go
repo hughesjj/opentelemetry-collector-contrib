@@ -193,7 +193,7 @@ func TestScrapeV2(t *testing.T) {
 			cfg.EnvVarsToMetricLabels = map[string]string{"ENV_VAR": "env-var-metric-label"}
 			cfg.ContainerLabelsToMetricLabels = map[string]string{"container.label": "container-metric-label"}
 			cfg.ProvidePerCoreCPUMetrics = true
-			cfg.MetricsBuilderConfig.MetricsSettings = allMetricsEnabled
+			cfg.MetricsBuilderConfig.Metrics = allMetricsEnabled
 
 			receiver := newReceiver(receivertest.NewNopCreateSettings(), cfg)
 			err := receiver.start(context.Background(), componenttest.NewNopHost())
