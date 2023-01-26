@@ -1031,6 +1031,16 @@ func DefaultMetricsBuilderConfig() MetricsBuilderConfig {
 	}
 }
 
+func (mbc MetricsBuilderConfig) WithMetricsSettings(ms MetricsSettings) MetricsBuilderConfig {
+	mbc.MetricsSettings = ms
+	return mbc
+}
+
+func (mbc MetricsBuilderConfig) WithResourceAttributesSettings(ras ResourceAttributesSettings) MetricsBuilderConfig {
+	mbc.ResourceAttributesSettings = ras
+	return mbc
+}
+
 func NewMetricsBuilder(mbc MetricsBuilderConfig, settings receiver.CreateSettings, options ...metricBuilderOption) *MetricsBuilder {
 	if mbc.MetricsSettings.ProcessMemoryPhysicalUsage.enabledSetByUser {
 		settings.Logger.Warn("[WARNING] `process.memory.physical_usage` should not be configured: The metric is deprecated and will be removed in v0.72.0. Please use `process.memory.usage` instead. See https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver#transition-to-process-memory-metric-names-aligned-with-opentelemetry-specification for more details.")
