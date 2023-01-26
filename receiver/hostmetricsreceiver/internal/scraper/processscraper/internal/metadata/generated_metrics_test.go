@@ -17,30 +17,30 @@ import (
 	"go.uber.org/zap/zaptest/observer"
 )
 
-type testMetricsSet int
+type testConfigCollection int
 
 const (
-	testMetricsSetDefault testMetricsSet = iota
-	testMetricsSetAll
-	testMetricsSetNo
+	testSetDefault testConfigCollection = iota
+	testSetAll
+	testSetNone
 )
 
 func TestMetricsBuilder(t *testing.T) {
 	tests := []struct {
-		name       string
-		metricsSet testMetricsSet
+		name      string
+		configSet testConfigCollection
 	}{
 		{
-			name:       "default",
-			metricsSet: testMetricsSetDefault,
+			name:      "default",
+			configSet: testSetDefault,
 		},
 		{
-			name:       "all_metrics",
-			metricsSet: testMetricsSetAll,
+			name:      "all_set",
+			configSet: testSetAll,
 		},
 		{
-			name:       "no_metrics",
-			metricsSet: testMetricsSetNo,
+			name:      "none_set",
+			configSet: testSetNone,
 		},
 	}
 	for _, test := range tests {
@@ -53,11 +53,11 @@ func TestMetricsBuilder(t *testing.T) {
 			mb := NewMetricsBuilder(loadConfig(t, test.name), settings, WithStartTime(start))
 
 			expectedWarnings := 0
-			if test.metricsSet == testMetricsSetAll || test.metricsSet == testMetricsSetNo {
+			if test.configSet == testSetAll || test.configSet == testSetNone {
 				assert.Equal(t, "[WARNING] `process.memory.physical_usage` should not be configured: The metric is deprecated and will be removed in v0.72.0. Please use `process.memory.usage` instead. See https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver#transition-to-process-memory-metric-names-aligned-with-opentelemetry-specification for more details.", observedLogs.All()[expectedWarnings].Message)
 				expectedWarnings++
 			}
-			if test.metricsSet == testMetricsSetAll || test.metricsSet == testMetricsSetNo {
+			if test.configSet == testSetAll || test.configSet == testSetNone {
 				assert.Equal(t, "[WARNING] `process.memory.virtual_usage` should not be configured: The metric is deprecated and will be removed in v0.72.0. Please use `process.memory.virtual` metric instead. See  https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver#transition-to-process-memory-metric-names-aligned-with-opentelemetry-specification for more details.", observedLogs.All()[expectedWarnings].Message)
 				expectedWarnings++
 			}
@@ -114,7 +114,7 @@ func TestMetricsBuilder(t *testing.T) {
 
 			metrics := mb.Emit(WithProcessCommand("attr-val"), WithProcessCommandLine("attr-val"), WithProcessExecutableName("attr-val"), WithProcessExecutablePath("attr-val"), WithProcessOwner("attr-val"), WithProcessParentPid(1), WithProcessPid(1))
 
-			if test.metricsSet == testMetricsSetNo {
+			if test.configSet == testSetNone {
 				assert.Equal(t, 0, metrics.ResourceMetrics().Len())
 				return
 			}
@@ -177,10 +177,10 @@ func TestMetricsBuilder(t *testing.T) {
 
 			assert.Equal(t, 1, rm.ScopeMetrics().Len())
 			ms := rm.ScopeMetrics().At(0).Metrics()
-			if test.metricsSet == testMetricsSetDefault {
+			if test.configSet == testSetDefault {
 				assert.Equal(t, defaultMetricsCount, ms.Len())
 			}
-			if test.metricsSet == testMetricsSetAll {
+			if test.configSet == testSetNone {
 				assert.Equal(t, allMetricsCount, ms.Len())
 			}
 			validatedMetrics := make(map[string]bool)
