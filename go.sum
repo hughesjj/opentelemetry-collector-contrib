@@ -2418,8 +2418,9 @@ go.opentelemetry.io/collector/component v0.68.0/go.mod h1:3826mXASuiwSwKoCKkRLSi
 go.opentelemetry.io/collector/component v0.70.0 h1:4GrQKhXPFm1fl5rzTs2kIui4driRfUAmf9Tp7hUk8NE=
 go.opentelemetry.io/collector/component v0.70.0/go.mod h1:oGcF4cJf1kSNe+heznP1s5JGZhhcE8CjaoJR6M2A0Rg=
 go.opentelemetry.io/collector/confmap v0.68.0/go.mod h1:gvG/g1eSLVHGKbRmn91g7ukfLuBx36hbuMf/ecpSzlE=
-go.opentelemetry.io/collector/confmap v0.70.0 h1:GJDaM7c3yFyT7Zv6l2/5ahwaqPCvtC92Ii8Bg2AVdjU=
 go.opentelemetry.io/collector/confmap v0.70.0/go.mod h1:8//JWR2TMChLH35Az0mGFrCskEIP6POgZJK6iRRhzeM=
+go.opentelemetry.io/collector/confmap v0.71.0 h1:SCVgn67jH0bNAiScx4CFx7tKpH0UfP8XQAOuH7EMPZQ=
+go.opentelemetry.io/collector/confmap v0.71.0/go.mod h1:cVHgj/wFAMq9qktwQb6iJbGkb2jdaDhZryRxdWIA9L8=
 go.opentelemetry.io/collector/consumer v0.68.0/go.mod h1:t6eNCk7ii4nPN+yMC+Wc+7FWRAnzDU7z06/RqQ9E8R0=
 go.opentelemetry.io/collector/consumer v0.70.0 h1:Z103QX++5AOHqjhDTyx7ITOycQ26XnM0o6QuedOHx9U=
 go.opentelemetry.io/collector/consumer v0.70.0/go.mod h1:JfMJigmMJkAMWoL7fDNirOLY0QTE9wxcFccLyJZU7E0=
@@ -2435,8 +2436,9 @@ go.opentelemetry.io/collector/extension/zpagesextension v0.68.0/go.mod h1:5RMJKU
 go.opentelemetry.io/collector/extension/zpagesextension v0.70.0 h1:tRc2GYFZQKMgEajokb2mNiCh3cuO/PtKOtlxT3VKf+U=
 go.opentelemetry.io/collector/extension/zpagesextension v0.70.0/go.mod h1:JuIyTXNlXGHlSzVs6HK0NVQkFT/kGHfqn7HQI4rhnqY=
 go.opentelemetry.io/collector/featuregate v0.68.0/go.mod h1:tewuFKJYalWBU0bmNKg++MC1ipINXUr6szYzOw2p1GI=
-go.opentelemetry.io/collector/featuregate v0.70.0 h1:Xr6hrMT/++SjTm06nreex8WlpgFhYJ7S0yRVn1OvVf8=
 go.opentelemetry.io/collector/featuregate v0.70.0/go.mod h1:ih+oCwrHW3bLac/qnPUzes28yDCDmh8WzsAKKauwCYI=
+go.opentelemetry.io/collector/featuregate v0.71.0 h1:X/OOapj8La0q/D4bBWIYYNBbkXOD71+RrdrYv+ipNuE=
+go.opentelemetry.io/collector/featuregate v0.71.0/go.mod h1:ih+oCwrHW3bLac/qnPUzes28yDCDmh8WzsAKKauwCYI=
 go.opentelemetry.io/collector/pdata v0.56.0/go.mod h1:mYcCREWiIJyHss0dbU+GSiz2tmGZ6u09vtfkKTciog4=
 go.opentelemetry.io/collector/pdata v0.57.2/go.mod h1:RU9I8lwBUxucwOsSYzHEcHi15M9QaX78hgQ2PRdSxV0=
 go.opentelemetry.io/collector/pdata v1.0.0-rc2/go.mod h1:3gknzI1BqPVbEprOIbtaPQgPAYvjRf8kdkpGMJjv14E=

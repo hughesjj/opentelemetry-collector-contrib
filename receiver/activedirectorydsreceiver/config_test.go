@@ -15,6 +15,7 @@
 package activedirectorydsreceiver
 
 import (
+	"go.opentelemetry.io/collector/confmap"
 	"path/filepath"
 	"testing"
 	"time"
@@ -72,4 +73,15 @@ func TestLoadConfig(t *testing.T) {
 			}
 		})
 	}
+}
+
+func (cfg *Config) Unmarshal(parser *confmap.Conf) error {
+	if parser == nil {
+		return nil
+	}
+	err := parser.Unmarshal(cfg) // , confmap.WithErrorUnused()) // , cmpopts.IgnoreUnexported(metadata.MetricSettings{}))
+	if err != nil {
+		return err
+	}
+	return nil
 }

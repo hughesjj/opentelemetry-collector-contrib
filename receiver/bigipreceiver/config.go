@@ -17,6 +17,7 @@ package bigipreceiver // import "github.com/open-telemetry/opentelemetry-collect
 import (
 	"errors"
 	"fmt"
+	"go.opentelemetry.io/collector/confmap"
 	"net/url"
 
 	"go.opentelemetry.io/collector/config/confighttp"
@@ -62,4 +63,15 @@ func (cfg *Config) Validate() error {
 	}
 
 	return err
+}
+
+func (cfg *Config) Unmarshal(parser *confmap.Conf) error {
+	if parser == nil {
+		return nil
+	}
+	err := parser.Unmarshal(cfg) // , confmap.WithErrorUnused()) // , cmpopts.IgnoreUnexported(metadata.MetricSettings{}))
+	if err != nil {
+		return err
+	}
+	return nil
 }
