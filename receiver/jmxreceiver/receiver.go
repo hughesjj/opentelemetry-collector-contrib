@@ -187,7 +187,9 @@ func (jmx *jmxMetricReceiver) buildJMXMetricGathererConfig() (string, error) {
 		}
 		jmx.config.Endpoint = fmt.Sprintf("service:jmx:rmi:///jndi/rmi://%v:%d/jmxrmi", host, port)
 	}
-
+	if jmx.config.EnableJmxSsl {
+		config["otel.jmx.remote.registry.ssl"] = "true"
+	}
 	config["otel.jmx.service.url"] = jmx.config.Endpoint
 	config["otel.jmx.interval.milliseconds"] = strconv.FormatInt(jmx.config.CollectionInterval.Milliseconds(), 10)
 	config["otel.jmx.target.system"] = jmx.config.TargetSystem

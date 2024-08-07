@@ -8,13 +8,6 @@ package jmxreceiver
 import (
 	"context"
 	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
-	"testing"
-	"time"
-
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"github.com/testcontainers/testcontainers-go"
@@ -24,6 +17,12 @@ import (
 	"go.opentelemetry.io/collector/consumer/consumertest"
 	"go.opentelemetry.io/collector/exporter/exporterhelper"
 	"go.opentelemetry.io/collector/receiver/receivertest"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
+	"testing"
+	"time"
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/coreinternal/scraperinttest"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatatest/pmetrictest"
@@ -32,8 +31,19 @@ import (
 const jmxPort = "7199"
 
 var jmxJarReleases = map[string]string{
+	"1.37.0-alpha": "https://repo1.maven.org/maven2/io/opentelemetry/contrib/opentelemetry-jmx-metrics/1.37.0-alpha/opentelemetry-jmx-metrics-1.37.0-alpha.jar",
 	"1.26.0-alpha": "https://repo1.maven.org/maven2/io/opentelemetry/contrib/opentelemetry-jmx-metrics/1.26.0-alpha/opentelemetry-jmx-metrics-1.26.0-alpha.jar",
 	"1.10.0-alpha": "https://repo1.maven.org/maven2/io/opentelemetry/contrib/opentelemetry-jmx-metrics/1.10.0-alpha/opentelemetry-jmx-metrics-1.10.0-alpha.jar",
+}
+
+func getLatestVersion() string {
+	latestVersion := ""
+	for key := range jmxJarReleases {
+		if key > latestVersion {
+			latestVersion = key
+		}
+	}
+	return latestVersion
 }
 
 type JMXIntegrationSuite struct {
@@ -44,7 +54,8 @@ type JMXIntegrationSuite struct {
 // It is recommended that this test be run locally with a longer timeout than the default 30s
 // go test -timeout 60s -run ^TestJMXIntegration$ github.com/open-telemetry/opentelemetry-collector-contrib/receiver/jmxreceiver
 func TestJMXIntegration(t *testing.T) {
-	suite.Run(t, new(JMXIntegrationSuite))
+	testSuite := new(JMXIntegrationSuite)
+	suite.Run(t, testSuite)
 }
 
 func (suite *JMXIntegrationSuite) SetupSuite() {
@@ -101,7 +112,7 @@ func integrationTest(version string, jar string) func(*testing.T) {
 					FileMode:          400,
 				}},
 				ExposedPorts: []string{jmxPort + ":" + jmxPort},
-				WaitingFor:   wait.ForListeningPort(jmxPort),
+				WaitingFor:   wait.ForAll(wait.ForListeningPort(jmxPort), wait.ForLog("Startup complete")),
 			}),
 		scraperinttest.AllowHardcodedHostPort(),
 		scraperinttest.WithCustomConfig(
@@ -158,4 +169,58 @@ func TestJMXReceiverInvalidOTLPEndpointIntegration(t *testing.T) {
 
 	err := receiver.Start(context.Background(), componenttest.NewNopHost())
 	require.Contains(t, err.Error(), "listen tcp: lookup <invalid>:")
+}
+
+func (suite *JMXIntegrationSuite) TestJmxReceiverSSL() {
+	version := getLatestVersion()
+	jar := jmxJarReleases[version]
+	integTest := scraperinttest.NewIntegrationTest(
+		NewFactory(),
+		scraperinttest.WithContainerRequest(
+			testcontainers.ContainerRequest{
+				Image: "cassandra:3.11",
+				Env: map[string]string{
+					"LOCAL_JMX": "no",
+					"JVM_OPTS":  "-Djava.rmi.server.hostname=0.0.0.0",
+				},
+				Files: []testcontainers.ContainerFile{{
+					HostFilePath:      filepath.Join("testdata", "integration", "jmxremote.password"),
+					ContainerFilePath: "/etc/cassandra/jmxremote.password",
+					FileMode:          400,
+				}},
+				ExposedPorts: []string{jmxPort + ":" + jmxPort},
+				WaitingFor:   wait.ForListeningPort(jmxPort),
+			}),
+		scraperinttest.AllowHardcodedHostPort(),
+		scraperinttest.WithCustomConfig(
+			func(t *testing.T, cfg component.Config, ci *scraperinttest.ContainerInfo) {
+				rCfg := cfg.(*Config)
+				rCfg.CollectionInterval = 3 * time.Second
+				rCfg.JARPath = jar
+				rCfg.Endpoint = fmt.Sprintf("%v:%s", ci.Host(t), ci.MappedPort(t, jmxPort))
+				rCfg.TargetSystem = "cassandra"
+				rCfg.Username = "cassandra"
+				rCfg.Password = "cassandra"
+				rCfg.ResourceAttributes = map[string]string{
+					"myattr":      "myvalue",
+					"myotherattr": "myothervalue",
+				}
+				rCfg.OTLPExporterConfig = otlpExporterConfig{
+					Endpoint: "127.0.0.1:0",
+					TimeoutSettings: exporterhelper.TimeoutSettings{
+						Timeout: time.Second,
+					},
+				}
+			}),
+		scraperinttest.WithExpectedFile(filepath.Join("testdata", "integration", version, "expected.yaml")),
+		scraperinttest.WithCompareOptions(
+			pmetrictest.IgnoreStartTimestamp(),
+			pmetrictest.IgnoreTimestamp(),
+			pmetrictest.IgnoreResourceMetricsOrder(),
+			pmetrictest.IgnoreMetricValues(),
+			pmetrictest.IgnoreMetricsOrder(),
+			pmetrictest.IgnoreMetricDataPointsOrder(),
+		),
+	).Run
+	suite.T().Run("jmxreceiver-ssl", integTest)
 }

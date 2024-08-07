@@ -36,6 +36,8 @@ type Config struct {
 	Username string `mapstructure:"username"`
 	// The JMX password
 	Password configopaque.String `mapstructure:"password"`
+	// The otel.jmx.remote.registry.ssl
+	EnableJmxSsl bool `mapstructure:"enable_jmx_ssl"`
 	// The keystore path for SSL
 	KeystorePath string `mapstructure:"keystore_path"`
 	// The keystore password for SSL

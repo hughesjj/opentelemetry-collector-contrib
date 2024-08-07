@@ -129,6 +129,12 @@ The headers to include in otlp metric submission requests.
 
 Corresponds to the `otel.exporter.otlp.metadata` property.
 
+### enable_jmx_ssl
+
+Must be set to true if your JMX remote server uses SSL.
+
+Corresponds to the `otel.jmx.remote.registry.ssl` property.
+
 ### keystore_path
 
 The keystore path is required if SSL is enabled on the target JVM.
